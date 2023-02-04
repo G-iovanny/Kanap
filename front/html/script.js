@@ -10,6 +10,7 @@ fetch('http://localhost:3000/api/products')
   })
   .catch(error => console.log(error));
 
+
   function constructItems(_id, imageUrl, altTxt, name, description){
     // Création du lien
     const newlink = document.createElement("a");
@@ -42,7 +43,6 @@ fetch('http://localhost:3000/api/products')
     // On ajoute le lien au document
     document.getElementById('items').appendChild(newlink);
   }  
-  
   
   
   
