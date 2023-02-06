@@ -18,10 +18,15 @@ fetch(`http://localhost:3000/api/products/${productId}`)
     document.getElementById('price').innerText = product.price;
     document.getElementById('description').innerText = product.description;
 
+    // Je boucle chaque couleur dans le tableau de la clé "colors" pour y crée une option de plus dans la liste
+    product.colors.forEach(function(color) {
+      const newOption = document.createElement('option');
+      newOption.setAttribute('value', color);
+      newOption.innerText = color;
 
-
-
-
+      document.getElementById('colors').appendChild(newOption);
+      
+  });
 
   })
   .catch(error => console.error(error));
