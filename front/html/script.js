@@ -14,7 +14,7 @@ fetch('http://localhost:3000/api/products')
   function constructItems(_id, imageUrl, altTxt, name, description){
     // Création du lien
     const newlink = document.createElement("a");
-    newlink.setAttribute("href", `/product.html?id=${_id}`);
+    newlink.setAttribute("href", `./product.html?id=${_id}`);
   
     // Création de l'article
     const newArticle = document.createElement('article');
