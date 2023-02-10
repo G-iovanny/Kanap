@@ -31,33 +31,91 @@ fetch(`http://localhost:3000/api/products/${productId}`)
       document.getElementById('colors').appendChild(newOption);  
   });
 
-  const select = document.getElementById('colors');
-  const ajouterPanier = document.getElementById('addToCart');
-  const quantite = document.getElementById('quantity');  
 
-  let articleId = params.get("id");
+  const buttonAddCart = document.getElementById('addToCart'); 
+let articleId = params.get("id");
+let panier = localStorage.getItem('panier') ? JSON.parse(localStorage.getItem('panier')) : [];
 
-  ajouterPanier.addEventListener('click', () => {
-    let panier = [];
+buttonAddCart.addEventListener("click", function() {
+  const selectColors = document.getElementById("colors");
+  const optionSelected = selectColors.options[selectColors.selectedIndex].value;
+  const quantitySelected = Number(document.getElementById("quantity").value);
 
-    // je récupère l'index de la sélection et je stock sa valeur dans une variable
-    const optionIndex = select.options[select.selectedIndex];
-    const optionSelected = optionIndex.value;
+  if (
+    optionSelected === "" ||
+    quantitySelected <= 0 ||
+    quantitySelected > 100 ||
+    !Number.isInteger(quantitySelected)
+  ) {
+    alert("Vous n'avez pas correctement rempli votre panier, veuillez suivre les instructions");
+    return;
+  }
 
-    // je stock la valeur de la quantitié dans une variable
-    const quantity = document.getElementById('quantity');
-    const quantitySelected = quantity.value;
+  let article = {
+    id: articleId,
+    option: optionSelected,
+    quantity: quantitySelected
+  };
 
+  let articleExist = false;
+
+  for (let i = 0; i < panier.length; i++) {
+    if (panier[i].id === articleId && panier[i].option === optionSelected) {
+      panier[i].quantity += quantitySelected;
+      articleExist = true;
+      break;
+    }
+  }
+
+  if (!articleExist) {
+    panier.push(article);
+  }
+
+  localStorage.setItem("panier", JSON.stringify(panier));
+
+  console.log(panier);
+});
+
+})
+  .catch(error => console.error(error));
+
+  /* buttonAddCart.addEventListener('click', () => {
+
+    const selectColors = document.getElementById('colors');
+
+      // Je stock la valeur de l'index de l'option selectionnée
+    const optionSelected = selectColors.options[selectColors.selectedIndex].value;
+
+      // Je stock la quantité sélectionné en la transformant en une valeur Number
+    const quantitySelected = Number(document.getElementById('quantity').value);
+
+      if(optionSelected === "" || quantitySelected <= 0 || quantitySelected >100 ||!Number.isInteger(quantitySelected)){
+        alert("Vous n'avez pas correctement rempli votre panier");
+        return
+      }
+
+    // Je crée un objet pour stocker les valeurs sélectionnés
     let article = {
       id: articleId,
       option: optionSelected,
       quantity: quantitySelected
     }
 
+    let articleExist = false;
+
+    for(let i = 0; i < panier.length; i++){
+      if(panier[i].id === articleId && panier[i].option === optionSelected){
+        panier[i].quantity += quantitySelected;
+        articleExist = true;
+        break
+      }
+    }
+
+    if(!articleExist){
+       // Je push l'objet dans mon tableau panier
     panier.push(article);
     console.log(article);
+    }
 
-  });
-
-})
-  .catch(error => console.error(error));
+  }); */
+  
