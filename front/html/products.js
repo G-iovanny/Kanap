@@ -32,33 +32,45 @@ fetch(`http://localhost:3000/api/products/${productId}`)
   });
 
 
-  const buttonAddCart = document.getElementById('addToCart'); 
+const buttonAddCart = document.getElementById('addToCart'); 
+
 let articleId = params.get("id");
+
+// Je vérifie si il y a déjà un panier dans le localstoarge : si oui, je le transforme en objet JS, sinon je le crée en tableau vide
 let panier = localStorage.getItem('panier') ? JSON.parse(localStorage.getItem('panier')) : [];
 
+
 buttonAddCart.addEventListener("click", function() {
+  
   const selectColors = document.getElementById("colors");
+  
+  // Je prends la valeur de l'index de la sélection de couleur et la valeur de la quantité en la transformant en Number
   const optionSelected = selectColors.options[selectColors.selectedIndex].value;
   const quantitySelected = Number(document.getElementById("quantity").value);
 
+  // si l'utilisateur a fait au moins une de ces erreurs, le panier est invalidé et on bloque la suite :
   if (
-    optionSelected === "" ||
-    quantitySelected <= 0 ||
-    quantitySelected > 100 ||
-    !Number.isInteger(quantitySelected)
+    optionSelected === "" || // si la couleur a été sélectionné
+    quantitySelected <= 0 || // si la quantité est inférieur ou égal à 0
+    quantitySelected > 100 || // si la quantité est supérieur à 100
+    !Number.isInteger(quantitySelected) // si la quantité est un nombre entier
   ) {
     alert("Vous n'avez pas correctement rempli votre panier, veuillez suivre les instructions");
     return;
   }
 
+  // je crée mon article qui sera un objet avec les proprités de cet article
   let article = {
     id: articleId,
     option: optionSelected,
     quantity: quantitySelected
   };
 
+  // J'initalise une variable pour savoir si l'article existe, on part du principe que de base l'article n'existe pas
   let articleExist = false;
 
+
+  // Je fais une boucle pour vérifier si l'article existe, si il existe la valeur de articleExist passe à true et sa quantité augmente
   for (let i = 0; i < panier.length; i++) {
     if (panier[i].id === articleId && panier[i].option === optionSelected) {
       panier[i].quantity += quantitySelected;
@@ -67,6 +79,7 @@ buttonAddCart.addEventListener("click", function() {
     }
   }
 
+  // si l'article n'existe pas, on le push dans le tableau panier
   if (!articleExist) {
     panier.push(article);
   }
@@ -78,44 +91,4 @@ buttonAddCart.addEventListener("click", function() {
 
 })
   .catch(error => console.error(error));
-
-  /* buttonAddCart.addEventListener('click', () => {
-
-    const selectColors = document.getElementById('colors');
-
-      // Je stock la valeur de l'index de l'option selectionnée
-    const optionSelected = selectColors.options[selectColors.selectedIndex].value;
-
-      // Je stock la quantité sélectionné en la transformant en une valeur Number
-    const quantitySelected = Number(document.getElementById('quantity').value);
-
-      if(optionSelected === "" || quantitySelected <= 0 || quantitySelected >100 ||!Number.isInteger(quantitySelected)){
-        alert("Vous n'avez pas correctement rempli votre panier");
-        return
-      }
-
-    // Je crée un objet pour stocker les valeurs sélectionnés
-    let article = {
-      id: articleId,
-      option: optionSelected,
-      quantity: quantitySelected
-    }
-
-    let articleExist = false;
-
-    for(let i = 0; i < panier.length; i++){
-      if(panier[i].id === articleId && panier[i].option === optionSelected){
-        panier[i].quantity += quantitySelected;
-        articleExist = true;
-        break
-      }
-    }
-
-    if(!articleExist){
-       // Je push l'objet dans mon tableau panier
-    panier.push(article);
-    console.log(article);
-    }
-
-  }); */
   
