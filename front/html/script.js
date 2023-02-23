@@ -11,6 +11,7 @@ fetch('http://localhost:3000/api/products')
   .catch(error => console.log(error));
 
 
+  // fonction pour construire nos éléments
   function constructItems(_id, imageUrl, altTxt, name, description){
     // Création du lien
     const newlink = document.createElement("a");

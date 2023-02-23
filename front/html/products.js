@@ -1,6 +1,7 @@
 const params = new URLSearchParams(window.location.search);
 const productId = params.get("id");
 
+
 fetch(`http://localhost:3000/api/products/${productId}`)
    .then(response => response.json())
    .then(product => {
@@ -53,11 +54,9 @@ fetch(`http://localhost:3000/api/products/${productId}`)
             }
          }
 
-
          if (!validateCartInput()) { // si validateCartInput retourne false, on arrête le script
             return;
           }
-
 
          // je crée mon article qui sera un objet avec les proprités de cet article
          let article = {
@@ -72,7 +71,6 @@ fetch(`http://localhost:3000/api/products/${productId}`)
             // J'initalise une variable pour savoir si l'article existe, on part du principe que de base l'article n'existe pas
             let articleExist = false;
             
-
             // Je fais une boucle pour vérifier si l'article existe, si oui : la valeur de articleExist passe à true et sa quantité augmente
             for (let i = 0; i < panier.length; i++) {
                if (panier[i].id === productId && panier[i].option === optionSelected) {
